@@ -14,7 +14,7 @@ import { BackAndroid } from 'react-native';
 import NavigationExperimental from 'react-native-experimental-navigation';
 
 import Actions, { ActionMap } from './Actions';
-import getInitialStateFromRoot from './State';
+import getInitialState from './State';
 import Reducer, { findElement } from './Reducer';
 import DefaultRenderer from './DefaultRenderer';
 import Scene from './Scene';
@@ -32,9 +32,6 @@ const propTypes = {
 };
 
 class Router extends Component {
-  static childContextTypes = {
-    routes: PropTypes.object,
-  }
 
   constructor(props) {
     super(props);
@@ -43,12 +40,6 @@ class Router extends Component {
     this.handleBackAndroid = this.handleBackAndroid.bind(this);
     const reducer = this.handleProps(props);
     this.state = { reducer };
-  }
-
-  getChildContext() {
-    return {
-      routes: Actions,
-    };
   }
 
   componentDidMount() {
@@ -76,7 +67,7 @@ class Router extends Component {
     }
 
     try {
-      Actions.androidBack();
+      Actions.pop();
       if (onBackAndroid) {
         onBackAndroid();
       }
@@ -117,7 +108,7 @@ class Router extends Component {
 
     scenesMap.rootProps = parentProps;
 
-    const initialState = getInitialStateFromRoot(scenesMap);
+    const initialState = getInitialState(scenesMap);
     const reducerCreator = props.createReducer || Reducer;
 
     const routerReducer = props.reducer || (
@@ -134,7 +125,7 @@ class Router extends Component {
       return null;
     }
     Actions.get = key => findElement(navigationState, key, ActionConst.REFRESH);
-    Actions.callback = (props) => {
+    Actions.callback = props => {
       const constAction = (props.type && ActionMap[props.type] ? ActionMap[props.type] : null);
       if (this.props.dispatch) {
         if (constAction) {

@@ -20,7 +20,12 @@ class TabBar extends Component {
     hideOnChildTabs: PropTypes.bool,
   };
 
-  static onSelect(el) {
+  constructor(props, context) {
+    super(props, context);
+    this.renderScene = this.renderScene.bind(this);
+  }
+
+  onSelect(el) {
     if (!Actions[el.props.name]) {
       throw new Error(
         `No action is defined for name=${el.props.name} ` +
@@ -31,11 +36,6 @@ class TabBar extends Component {
     } else {
       Actions[el.props.name]();
     }
-  }
-
-  constructor(props, context) {
-    super(props, context);
-    this.renderScene = this.renderScene.bind(this);
   }
 
   renderScene(navigationState) {
@@ -61,11 +61,11 @@ class TabBar extends Component {
         style={state.tabBarStyle}
         selectedIconStyle={state.tabBarSelectedItemStyle}
         iconStyle={state.tabBarIconContainerStyle}
-        onSelect={TabBar.onSelect} {...state}
+        onSelect={this.onSelect} {...state}
         selected={selected.sceneKey}
         pressOpacity={this.props.pressOpacity}
       >
-        {state.children.filter(el => el.icon || this.props.tabIcon).map((el) => {
+        {state.children.filter(el => el.icon || this.props.tabIcon).map(el => {
           const Icon = el.icon || this.props.tabIcon;
           return <Icon {...this.props} {...el} />;
         })}
@@ -82,7 +82,7 @@ class TabBar extends Component {
         />
         {!hideTabBar && state.children.filter(el => el.icon).length > 0 &&
           (state.tabBarBackgroundImage ? (
-            <Image source={state.tabBarBackgroundImage} style={state.tabBarBackgroundImageStyle}>
+            <Image source={state.tabBarBackgroundImage}>
               {contents}
             </Image>
           ) : contents)

@@ -6,10 +6,10 @@ import Actions from '../src/Actions';
 import * as ActionConst from '../src/ActionConst';
 
 import createReducer, { getCurrent, findElement } from '../src/Reducer';
-import getInitialStateFromRoot from '../src/State';
+import getInitialState from '../src/State';
 
-const id = 0;
-const guid = () => id + 1;
+let id = 0;
+const guid = () => id++;
 const scenesData = (
   <Scene
     key="root"
@@ -49,7 +49,7 @@ describe('popAndReplace', () => {
 
   beforeEach(() => {
     const scenes = Actions.create(scenesData);
-    const initialState = getInitialStateFromRoot(scenes);
+    const initialState = getInitialState(scenes);
     reducer = createReducer({ initialState, scenes });
     latestState = null;
   });

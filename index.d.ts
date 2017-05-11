@@ -41,9 +41,9 @@ declare namespace RNRF {
      */
     duration?: number,
     /**
-     * direction of animation horizontal/vertical/fade
+     * direction of animation horizontal/vertical
      */
-    direction?: 'vertical' | 'horizontal' | 'fade',
+    direction?: 'vertical' | 'horizontal',
     /**
      * optional if provided overrides the default spring animation
      */
@@ -75,10 +75,7 @@ declare namespace RNRF {
      * hides tab bar for this scene and any following scenes until explicitly reversed (if built-in TabBar component is used as parent renderer)
      */
     hideTabBar?: boolean,
-    /**
-     * icon for a tab
-     */
-    icon?: React.ReactNode;
+
 
     // Navigation Bar
 
@@ -99,10 +96,6 @@ declare namespace RNRF {
      * Simple way to override the drawerImage in the navBar
      */
     drawerImage?: ReactNative.Image,
-    /**
-    * hides the drawer for this scene and any following scenes until explicitly reversed
-    */
-    open?: boolean,
 
     // Navigation Bar: Title
 
@@ -209,8 +202,6 @@ declare namespace RNRF {
      * optional wrappert
      */
     wrapBy?: ()=>any,
-      
-    panHandlers?: null | (()=>any)
   }
 
   /**
@@ -265,8 +256,7 @@ declare namespace RNRF {
     rightButtonImage?: ReactNative.Image,
     rightButtonIconStyle?: ReactNative.ViewStyle,
     rightButtonStyle?: ReactNative.ViewStyle,
-    rightButtonTextStyle?: ReactNative.TextStyle,
-    backAndroidHandler? : Function
+    rightButtonTextStyle?: ReactNative.TextStyle
   }
   export class Router extends React.Component<RouterProps, {}>{ }
 
@@ -279,8 +269,7 @@ declare namespace RNRF {
     jump(props: props): void,
     refresh(props: props): void,
     focus(props: props): void,
-    create(scene: React.ReactNode, wrapBy?: () => any): Object,
-    [sceneKey: string]: (props?: props) => void
+    create(scene: React.ReactNode, wrapBy?: () => any): Object
   }
 
   export var Actions: RNRFActions;

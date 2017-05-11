@@ -71,44 +71,8 @@ Lastly when calling the Modal pass the props defined in the component, for examp
 
 When the Modal is pressed it will set hide to true and return an empty view.
 
-## TabBar
+## Tabbar
 Every tab has its own navigation bar. However, if you do not set its parent `<Scene tabs={true} />` with `hideNavBar={true}`, the tabs' navigation bar will be overrided by their parent.
-
-Customizing `TabBar`:
-
-```javascript
-let style = StyleSheet.create({
-        tabBarStyle: {
-            borderTopWidth : .5,
-            borderColor    : '#b7b7b7',
-            backgroundColor: 'white',
-            opacity        : 1
-        }
-    });
-
-// in your render method
-<Scene key="myTabBar" tabs={true} hideNavBar tabBarStyle={style.tabBarStyle}>
-</Scene>
-    
-```
-
-Refresh a particular `Scene` when a `Tab` is pressed:
-
-```javascript
-<Scene key="myTabBar" tabs={true} hideNavBar tabBarStyle={style.tabBarStyle}>
-  <Scene 
-    key="myTab" 
-    title="My Tab" 
-    icon={MyTabIcon} 
-    onPress={()=> {
-      Actions.myTab_1({type: ActionConst.REFRESH});
-    }}
-   >
-      <Scene key="myTab_1" component={MyTabComponent} hideNavBar/>
-  </Scene>
-</Scene>
-```
-
 
 ## Custom nav bar for individual scene or even different state of scene (new feature):
 Your scene `component` class could implement _static_ renderNavigationBar(props) method that could return different navbar depending from component props
@@ -151,7 +115,7 @@ module.exports = <Scene key="tabbar" tabs={true}>
 ```
 
 ## Drawer (side menu) integration
-Example of Drawer custom renderer based on react-native-drawer. Note that the built-in NavBar component supports toggling of drawer. The Drawer implementation just needs to have a function: toggle()
+Example of Drawer custom renderer based on react-native-drawer. Note that the build-in NavBar component supports toggling of drawer. The Drawer implementation just needs to have a function: toggle()
 With DefaultRenderer you may build own drawer 'renderer' that transforms current navigation state into drawer. Drawer could check own state (open/close) from navigation state:
 
 ```jsx
@@ -160,7 +124,7 @@ import Drawer from 'react-native-drawer';
 import SideMenu from './SideMenu';
 import {Actions, DefaultRenderer} from 'react-native-router-flux';
 
-export default class NavigationDrawer extends Component {
+export default class extends Component {
     render(){
         const state = this.props.navigationState;
         const children = state.children;
@@ -184,24 +148,16 @@ export default class NavigationDrawer extends Component {
         );
     }
 }
-```
-```jsx
-// Where you want to put navigation drawer
-render() {
-    return (
-        <Router
-            // then wrap your tabs scene with Drawer:
-            <Scene key="drawer" component={NavigationDrawer} open={false} >
+
+/// then wrap your tabs scene with Drawer:
+            <Scene key="drawer" component={Drawer} open={false} >
                 <Scene key="main" tabs={true} >
-                ....
+                        ....
+                </Scene>
             </Scene>
-        </Scene>
-    );
-}
-```
-```jsx
+
 // then you could open/hide/toggle drawer anywhere using 'refresh' modifiers:
-Actions.refresh({key: 'drawer', open: value => !value });
+          Actions.refresh({key: 'drawer', open: value => !value });
 ```
 ## Sub-scenes support
 You could create 'sub-scene' actions by putting them as children for needed 'base' scene without `component` prop and call such action anywhere - 'base' Scene will be updated accordingly.
